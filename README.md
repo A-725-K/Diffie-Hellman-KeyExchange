@@ -3,7 +3,7 @@ Simple implementation of key exchange protocol Diffie-Hellman in a client/server
 
 @@ Author: Andrea Canepa
 
-DO NOT USE, FOR ANY REASON, THIS IMPLEMENTATION IN YOURS CRYPTOGRAPHYC APPLICATIONS !!!
+DO NOT USE, FOR ANY REASON, THIS IMPLEMENTATION IN YOUR CRYPTOGRAPHYC APPLICATIONS !!!
 
 Once you have cloned/downloaded this repo, in order to launch the program you have to:
      1) launch the command "make" to compile the source code
