@@ -68,6 +68,8 @@ void Server::serverLoopToAcceptConnections() {
     args.g = &(this -> g[this -> nr_of_clients]);
     args.p = &(this -> p[this -> nr_of_clients]);
     args.private_key = &(this -> private_key[this -> nr_of_clients]);
+    args.lock = &(this -> accept_mutex);
+    args.nr_cl = &(this -> nr_of_clients);
     args.sock = this -> clients_sockets[this -> nr_of_clients];
     
     if (pthread_create(&client_thread,
@@ -77,8 +79,8 @@ void Server::serverLoopToAcceptConnections() {
 		       utils::failError("Error executing pthread_create()");
     
     this -> clients_threads[this -> nr_of_clients] = client_thread;
-    pthread_mutex_unlock(&accept_mutex);
     this -> nr_of_clients++;
+    pthread_mutex_unlock(&accept_mutex);
   }
 
   for (i = 0; i < MAX_CONN; i++)
@@ -112,9 +114,13 @@ void* taskClient(void* vp) {
   utils::sendMessage(args.sock, msg_to, strlen(msg_to));
 
   *args.private_key = math::powModN(y_a, x_b, *args.p);
-  cout << "Private key -> " << *args.private_key << endl;
+  cout << "Private key -> " << *args.private_key << endl << endl;
 
   free(msg_to);
   close(args.sock);
+
+  pthread_mutex_unlock(args.lock);
+  (*args.nr_cl)--;
+  pthread_mutex_lock(args.lock);
   return NULL;
 }

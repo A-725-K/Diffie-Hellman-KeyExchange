@@ -17,7 +17,7 @@
 
 #define BUF_LEN 1024
 #define MAX_CONN 5
-#define PORT "4444"
+#define PORT "4445"
 
 using namespace std;
 
@@ -26,6 +26,8 @@ struct pth_args {
   long long *p;
   long long *private_key;
 
+  pthread_mutex_t *lock;
+  int *nr_cl;
   int sock;
 };
 
